@@ -1,22 +1,78 @@
 let grid;
+let isDragging = false;
 
 function initialization(){
-  // here we are initializing the project variables that can be changed in the menu
+    // tutaj inicjalizacja zmiennych projektu
 }
 
 function setup() {
-  initialization();
-  createCanvas(windowWidth, windowHeight);
-  grid = new Grid(windowWidth, windowHeight);
-  ellipseMode(RADIUS);
+    initialization();
+    createCanvas(windowWidth, windowHeight);
+    grid = new Grid(windowWidth, windowHeight);
+    ellipseMode(RADIUS);
+    setupModeButtons();
+}
+
+function setupModeButtons() {
+    // pobierz wszystkie elementy menu
+    let elements = document.querySelectorAll('.menu .element');
+    
+    // dodaj nasłuchiwanie kliknięć dla każdego przycisku
+    elements[0].addEventListener('click', () => setMode('isStartMode'));
+    elements[1].addEventListener('click', () => setMode('isEndMode'));
+    elements[2].addEventListener('click', () => setMode('isWallMode'));
+    elements[3].addEventListener('click', () => setMode('isEraseMode'));
+    elements[4].addEventListener('click', () => setMode('isWeightMode'));
+}
+
+function setMode(selectedMode) {
+    // resetuj wszystkie tryby
+    config.isStartMode = false;
+    config.isEndMode = false;
+    config.isWallMode = false;
+    config.isWeightMode = false;
+    config.isEraseMode = false;
+    
+    // ustaw wybrany tryb
+    config[selectedMode] = true;
+    
+    // zaktualizuj wizualnie aktywny przycisk
+    let elements = document.querySelectorAll('.menu .element');
+    elements.forEach((element, index) => {
+        if ((index === 0 && selectedMode === 'isStartMode') ||
+            (index === 1 && selectedMode === 'isEndMode') ||
+            (index === 2 && selectedMode === 'isWallMode') ||
+            (index === 3 && selectedMode === 'isEraseMode') ||
+            (index === 4 && selectedMode === 'isWeightMode')) {
+            element.classList.add('active');
+        } else {
+            element.classList.remove('active');
+        }
+    });
 }
 
 function mousePressed() {
+    isDragging = true;
     let cell = grid.getCell();
-    cell.click();
+    if (cell) {
+        cell.click(config);
+    }
+}
+
+function mouseDragged() {
+    if (isDragging) {
+        let cell = grid.getCell();
+         if (cell) {
+            cell.click(config);
+        }
+    }
+}
+
+function mouseReleased() {
+    isDragging = false;
 }
 
 function draw() {
-  background(255);
-  grid.show();
+    background(255);
+    grid.show();
 }
