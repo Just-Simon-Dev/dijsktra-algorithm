@@ -11,6 +11,11 @@ function setup() {
   ellipseMode(RADIUS);
 }
 
+function mousePressed() {
+    let cell = grid.getCell();
+    cell.click();
+}
+
 function draw() {
   background(255);
   grid.show();

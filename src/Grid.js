@@ -2,6 +2,7 @@ class Grid {
     constructor(width, height, length = 20) {
         this.width = width;
         this.height = height;
+        this.length = length;
         this.grid = []
         this.verticalNumberOfBlocks = Math.floor(width / length);
         this.horizontalNumberOfBlocks = Math.floor(height / length);
@@ -15,15 +16,21 @@ class Grid {
         }
     }
 
-    getGrid() {
-        return this.grid;
-    }
-    getCell(x, y) {
+    getCellByXY(x, y) {
         if (x < 0 || x >= this.verticalNumberOfBlocks || y < 0 || y >= this.horizontalNumberOfBlocks) {
             throw new Error("Index out of bounds");
         }
+
         return this.grid[y][x];
     }
+
+    getCell() {
+        let x = Math.floor(mouseX / this.length);
+        let y = Math.floor(mouseY / this.length);
+
+        return this.getCellByXY(x, y)
+    }
+
     show() {
         for (let y = 0; y < this.horizontalNumberOfBlocks; y++) {
             for (let x = 0; x < this.verticalNumberOfBlocks; x++) {
