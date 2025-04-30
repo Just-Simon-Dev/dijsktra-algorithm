@@ -1,0 +1,72 @@
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300&display=swap');
+* {
+    font-family: Verdana, Geneva, Tahoma, sans-serif ;
+    overflow: hidden;
+    padding: 0; 
+    margin: 0;
+}
+.title{
+    display: inline-block;
+    text-align: center;
+    width: 100%;
+    font-size: 2.4em;
+    font-family: 'Quicksand', sans-serif;
+    padding: 40px 0px;
+}
+.version{
+    display: inline-block;
+    font-size: 12px;
+    padding-bottom: 15px;
+    padding-left: 1px;
+    color: #ee5253;
+}
+a{
+    text-decoration: none;
+    color: #000;
+}
+a:hover{
+    text-decoration: underline;
+}
+.menu {
+    padding: 5px 10px;
+    text-align: center;
+}
+.element, .increment, .decrement, .output, .number{
+    display: inline-block;
+    font-size: 16px;
+}
+.increment, .decrement, .output{
+    border: 1px solid #c8d6e5;
+    font-size: 14px;
+}
+.increment, .decrement{
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+}
+input[type="number"] {
+    -webkit-appearance: textfield;
+       -moz-appearance: textfield;
+            appearance: textfield;
+  }
+  input[type=number]::-webkit-inner-spin-button, 
+  input[type=number]::-webkit-outer-spin-button { 
+    -webkit-appearance: none;
+  }
+.output{
+    height: 16px;
+}
+select{
+    border-radius: 0;
+}
+.output:hover, .decrement:hover, .increment:hover, input:hover, input:focus, select:hover, select:focus{
+    background-color: rgba(131, 149, 167, .1);
+}
+input:focus{
+    outline: none;
+}
+input, select{
+    list-style-type: none;
+    border: 1px solid rgba(200, 214, 229, .9);
+    text-align: center;
+}
