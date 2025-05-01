@@ -16,7 +16,7 @@ function setup() {
 function setupModeButtons() {
     // pobierz wszystkie elementy menu
     let elements = document.querySelectorAll('.menu .element');
-    
+
     // dodaj nasłuchiwanie kliknięć dla każdego przycisku
     elements[0].addEventListener('click', () => setMode('isStartMode'));
     elements[1].addEventListener('click', () => setMode('isEndMode'));
@@ -32,10 +32,11 @@ function setMode(selectedMode) {
     config.isWallMode = false;
     config.isWeightMode = false;
     config.isEraseMode = false;
-    
+
     // ustaw wybrany tryb
     config[selectedMode] = true;
-    
+
+
     // zaktualizuj wizualnie aktywny przycisk
     let elements = document.querySelectorAll('.menu .element');
     elements.forEach((element, index) => {
@@ -49,6 +50,14 @@ function setMode(selectedMode) {
             element.classList.remove('active');
         }
     });
+}
+
+async function startDijkstra() {
+    if (grid.isStartPointInitialized() && grid.isEndPointInitialized()) {
+        await grid.calculateShortestPath();
+    } else {
+        alert("Proszę ustawić punkt startowy i końcowy.");
+    }
 }
 
 function mousePressed() {

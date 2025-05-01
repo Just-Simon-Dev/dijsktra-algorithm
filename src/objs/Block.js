@@ -19,6 +19,7 @@ class Block {
         this.isWall = false;
         this.color = 255;
         this.weight = 1;
+        this.distance = Infinity;
     }
 
     getWidth() {
@@ -27,6 +28,13 @@ class Block {
 
     getHeight() {
         return this.y2 - this.y1;
+    }
+
+    getCoordinates() {
+        return {
+            x: Math.floor(this.x1 / this.getWidth()),
+            y: Math.floor(this.y1 / this.getHeight())
+        };
     }
 
     getType() {
