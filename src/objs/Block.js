@@ -22,6 +22,13 @@ class Block {
         this.distance = Infinity;
     }
 
+    reset() {
+        this.isWall = false;
+        this.color = 255;
+        this.weight = 1;
+        this.distance = Infinity;
+    }
+
     getWidth() {
         return this.x2 - this.x1;
     }

@@ -23,6 +23,7 @@ function setupModeButtons() {
     elements[2].addEventListener('click', () => setMode('isWallMode'));
     elements[3].addEventListener('click', () => setMode('isEraseMode'));
     elements[4].addEventListener('click', () => setMode('isWeightMode'));
+    elements[5].addEventListener('click', () => grid.resetCells());
 }
 
 function setMode(selectedMode) {

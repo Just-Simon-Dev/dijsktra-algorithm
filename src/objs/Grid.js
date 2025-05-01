@@ -78,6 +78,14 @@ class Grid {
         return neighbors;
     }
 
+    resetCells() {
+        for (let y = 0; y < this.horizontalNumberOfBlocks; y++) {
+            for (let x = 0; x < this.verticalNumberOfBlocks; x++) {
+                this.grid[y][x].reset();
+            }
+        }
+    }
+
     async calculateShortestPath() {
         let startPoint = this.getStart();
         let endPoint = this.getEnd();
