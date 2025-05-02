@@ -87,78 +87,43 @@ class Grid {
     }
 
     async calculateShortestPath() {
-        // Pobierz punkty startowy i końcowy
         const startPoint = this.getStart();
         const endPoint = this.getEnd();
         const start = this.grid[startPoint.y][startPoint.x];
         const end = this.grid[endPoint.y][endPoint.x];
 
-        // Inicjalizacja odległości i poprzedników
-        for (let row of this.grid) {
-            for (let cell of row) {
-                cell.distance = Infinity;
-                cell.previous = null;
-            }
-        }
+        this.initializeDistances();
 
-        // Zbiór odwiedzonych węzłów i funkcja generująca klucz
         const visited = new Set();
-        const getNodeKey = ({x, y}) => `${x},${y}`;
-
-        // Inicjalizacja dla punktu startowego
         start.distance = 0;
+
         const heap = new MinHeap();
         heap.push(start);
 
-        // Główna pętla algorytmu
         while (!heap.isEmpty()) {
-            // Dodaj małe opóźnienie dla wizualizacji
             await new Promise(resolve => setTimeout(resolve, 10));
 
             const current = heap.pop();
-            const currentKey = getNodeKey(current.getCoordinates());
-            
-            // Pomiń już odwiedzone węzły
-            if (visited.has(currentKey)) continue;
+            const currentKey = this.generateNodeKey(current.getCoordinates());
+
+            if (visited.has(currentKey)) {
+                continue;
+            }
+
             visited.add(currentKey);
 
-            // Zakończ jeśli znaleźliśmy cel
-            if (current === end) break;
+            if (current === end) {
+                break;
+            }
 
-            // Oznacz odwiedzone węzły (z wyjątkiem startu i końca)
             if (current !== start && current !== end) {
                 current.changeType(BlockType.VISITED);
             }
 
-            // Sprawdź wszystkich sąsiadów
-            const neighbors = this.getNeighbors(current.getCoordinates());
-            for (const neighbor of neighbors) {
-                const neighborKey = getNodeKey(neighbor.getCoordinates());
-            
-                // Pomiń odwiedzone węzły i ściany
-                if (visited.has(neighborKey) || neighbor.isWall) continue;
-
-                // Oblicz nową potencjalną odległość
-                const newDistance = current.distance + neighbor.weight;
-            
-                // Aktualizuj odległość jeśli znaleziono krótszą ścieżkę
-                if (newDistance < neighbor.distance) {
-                    neighbor.distance = newDistance;
-                    neighbor.previous = current;
-                    heap.push(neighbor);
-                }
-            }
+            await this.processNeighbors(current, end, heap, visited);
         }
 
-        // Wizualizacja znalezionej ścieżki
-        if (end.previous) {
-            let current = end.previous;
-            while (current && current !== start) {
-                await new Promise(resolve => setTimeout(resolve, 50));
-                current.changeType(BlockType.PATH);
-                current = current.previous;
-            }
-        }
+        await this.visualizePath(start, end);
     }
 
     getCellByXY(x, y) {
@@ -181,4 +146,49 @@ class Grid {
             }
         }
     }
+
+    generateNodeKey(coordinates) {
+        return `${coordinates.x},${coordinates.y}`;
+    }
+
+    initializeDistances() {
+        for (let row of this.grid) {
+            for (let cell of row) {
+                cell.distance = Infinity;
+                cell.previous = null;
+            }
+        }
+    }
+
+    async processNeighbors(current, end, heap, visited) {
+        const neighbors = this.getNeighbors(current.getCoordinates());
+
+        for (const neighbor of neighbors) {
+            const neighborKey = this.generateNodeKey(neighbor.getCoordinates());
+
+            if (visited.has(neighborKey) || neighbor.isWall) {
+                continue;
+            }
+
+            const newDistance = current.distance + neighbor.weight;
+
+            if (newDistance < neighbor.distance) {
+                neighbor.distance = newDistance;
+                neighbor.previous = current;
+                heap.push(neighbor);
+            }
+        }
+    }
+
+    async visualizePath(start, end) {
+        if (end.previous) {
+            let current = end.previous;
+            while (current && current !== start) {
+                await new Promise(resolve => setTimeout(resolve, 50));
+                current.changeType(BlockType.PATH);
+                current = current.previous;
+            }
+        }
+    }
+
 }
