@@ -22,8 +22,8 @@ class Block {
         this.distance = Infinity;
     }
 
-    reset() {
-        this.isWall = false;
+    reset(excludeWalls = false) {
+        if (!excludeWalls) this.isWall = false;
         this.color = 255;
         this.weight = 1;
         this.distance = Infinity;

@@ -48,6 +48,16 @@ function setMode(selectedMode) {
     });
 }
 
+function showPopup() {
+    let popup = document.getElementById('popup');
+    popup.style.display = 'block';
+}
+
+function closePopup() {
+    let popup = document.getElementById('popup');
+    popup.style.display = 'none';
+}
+
 async function startDijkstra() {
     if (grid.isStartPointInitialized() && grid.isEndPointInitialized()) {
         await grid.calculateShortestPath();

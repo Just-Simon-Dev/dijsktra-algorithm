@@ -86,12 +86,23 @@ class Grid {
         }
     }
 
+    resetCellsExceptWall() {
+        for (let y = 0; y < this.horizontalNumberOfBlocks; y++) {
+            for (let x = 0; x < this.verticalNumberOfBlocks; x++) {
+                if (!this.grid[y][x].isWall) {
+                    this.grid[y][x].reset(true);
+                }
+            }
+        }
+    }
+
     async calculateShortestPath() {
         const startPoint = this.getStart();
         const endPoint = this.getEnd();
         const start = this.grid[startPoint.y][startPoint.x];
         const end = this.grid[endPoint.y][endPoint.x];
 
+        this.resetCellsExceptWall();
         this.initializeDistances();
 
         const visited = new Set();
