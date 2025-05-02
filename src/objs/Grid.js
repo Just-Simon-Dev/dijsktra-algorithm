@@ -87,58 +87,70 @@ class Grid {
     }
 
     async calculateShortestPath() {
-        let startPoint = this.getStart();
-        let endPoint = this.getEnd();
-        let start = this.grid[startPoint.y][startPoint.x];
-        let end = this.grid[endPoint.y][endPoint.x];
-        
-        // Reset wszystkich odległości
-        for (let y = 0; y < this.horizontalNumberOfBlocks; y++) {
-            for (let x = 0; x < this.verticalNumberOfBlocks; x++) {
-                this.grid[y][x].distance = Infinity;
-                this.grid[y][x].previous = null;
+        // Pobierz punkty startowy i końcowy
+        const startPoint = this.getStart();
+        const endPoint = this.getEnd();
+        const start = this.grid[startPoint.y][startPoint.x];
+        const end = this.grid[endPoint.y][endPoint.x];
+
+        // Inicjalizacja odległości i poprzedników
+        for (let row of this.grid) {
+            for (let cell of row) {
+                cell.distance = Infinity;
+                cell.previous = null;
             }
         }
 
-        let queue = [];
-        let visited = new Set();
+        // Zbiór odwiedzonych węzłów i funkcja generująca klucz
+        const visited = new Set();
+        const getNodeKey = ({x, y}) => `${x},${y}`;
 
+        // Inicjalizacja dla punktu startowego
         start.distance = 0;
-        queue.push(start);
+        const heap = new MinHeap();
+        heap.push(start);
 
-        while (queue.length > 0) {
+        // Główna pętla algorytmu
+        while (!heap.isEmpty()) {
+            // Dodaj małe opóźnienie dla wizualizacji
             await new Promise(resolve => setTimeout(resolve, 10));
+
+            const current = heap.pop();
+            const currentKey = getNodeKey(current.getCoordinates());
             
-            queue.sort((a, b) => a.distance - b.distance);
-            let current = queue.shift();
+            // Pomiń już odwiedzone węzły
+            if (visited.has(currentKey)) continue;
+            visited.add(currentKey);
 
-            if (current === end) {
-                break;
-            }
+            // Zakończ jeśli znaleźliśmy cel
+            if (current === end) break;
 
-            if (visited.has(current)) {
-                continue;
-            }
-
-            visited.add(current);
+            // Oznacz odwiedzone węzły (z wyjątkiem startu i końca)
             if (current !== start && current !== end) {
                 current.changeType(BlockType.VISITED);
             }
 
-            let neighbors = this.getNeighbors(current.getCoordinates());
+            // Sprawdź wszystkich sąsiadów
+            const neighbors = this.getNeighbors(current.getCoordinates());
+            for (const neighbor of neighbors) {
+                const neighborKey = getNodeKey(neighbor.getCoordinates());
+            
+                // Pomiń odwiedzone węzły i ściany
+                if (visited.has(neighborKey) || neighbor.isWall) continue;
 
-            for (let neighbor of neighbors) {
-                if (!visited.has(neighbor) && !neighbor.isWall) {
-                    let tentativeDistance = current.distance + neighbor.weight;
-                    if (tentativeDistance < neighbor.distance) {
-                        neighbor.distance = tentativeDistance;
-                        neighbor.previous = current;
-                        queue.push(neighbor);
-                    }
+                // Oblicz nową potencjalną odległość
+                const newDistance = current.distance + neighbor.weight;
+            
+                // Aktualizuj odległość jeśli znaleziono krótszą ścieżkę
+                if (newDistance < neighbor.distance) {
+                    neighbor.distance = newDistance;
+                    neighbor.previous = current;
+                    heap.push(neighbor);
                 }
             }
         }
 
+        // Wizualizacja znalezionej ścieżki
         if (end.previous) {
             let current = end.previous;
             while (current && current !== start) {

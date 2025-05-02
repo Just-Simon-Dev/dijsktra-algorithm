@@ -1,14 +1,9 @@
 let grid;
 let isDragging = false;
 
-function initialization(){
-    // tutaj inicjalizacja zmiennych projektu
-}
-
 function setup() {
-    initialization();
-    createCanvas(windowWidth, windowHeight);
-    grid = new Grid(windowWidth, windowHeight);
+    createCanvas(windowWidth, windowHeight - 308.6);
+    grid = new Grid(windowWidth, windowHeight - 308.6);
     ellipseMode(RADIUS);
     setupModeButtons();
 }
