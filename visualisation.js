@@ -1,9 +1,23 @@
 let grid;
 let isDragging = false;
 
+
+function automateHeight() {
+    let automateHeight = 0;
+
+    document.body.children.forEach((element) => {
+        if (element.nodeName !== 'MAIN') {
+            automateHeight += element.offsetHeight;
+        }
+    });
+
+    return automateHeight;
+}
+
 function setup() {
-    createCanvas(windowWidth, windowHeight - 308.6);
-    grid = new Grid(windowWidth, windowHeight - 308.6);
+    const height = automateHeight();
+    createCanvas(windowWidth, windowHeight - height);
+    grid = new Grid(windowWidth, windowHeight - height);
     ellipseMode(RADIUS);
     setupModeButtons();
 }
@@ -62,7 +76,7 @@ async function startDijkstra() {
     if (grid.isStartPointInitialized() && grid.isEndPointInitialized()) {
         await grid.calculateShortestPath();
     } else {
-        alert("Proszę ustawić punkt startowy i końcowy.");
+        alert("Please set start and end points (learn more from questionmark).");
     }
 }
 
