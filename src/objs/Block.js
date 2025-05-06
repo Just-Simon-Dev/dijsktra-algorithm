@@ -1,3 +1,11 @@
+function preload() {
+    startImg = loadImage('assets/worm-hand-drawn-animal-svgrepo-com.svg');
+    endImg = loadImage('assets/flower1-svgrepo-com.svg');
+}
+
+let startImg;
+let endImg;
+
 let BlockType = {
     'EMPTY': 0,
     'WALL': 1,
@@ -56,7 +64,7 @@ class Block {
             this.isEnd = true;
         } else if(type === BlockType.WALL) {
             this.isWall = true;
-            this.color = 100;
+            this.color = color(178, 34, 34);
         } else if(type === BlockType.EMPTY) {
             this.isStart = false;
             this.isEnd = false;
@@ -64,7 +72,7 @@ class Block {
             this.weight = 1;
             this.color = 255;
         } else if(type === BlockType.PATH) {
-            this.color = 0;
+            this.color = color(40, 167, 69);
         } else if(type === BlockType.VISITED) {
             this.color = 150;
         }
@@ -72,14 +80,24 @@ class Block {
 
     show() {
         if(this.isStart) {
-            fill(0, 255, 0);
-            rect(this.x1, this.y1, this.getWidth(), this.getHeight());
+            if (startImg) {
+                image(startImg, this.x1, this.y1, this.getWidth(), this.getHeight());
+            } else {
+                fill(0, 255, 0);
+                rect(this.x1, this.y1, this.getWidth(), this.getHeight());
+            }
             return;
         } else if(this.isEnd) {
-            fill(255, 0, 0);
-            rect(this.x1, this.y1, this.getWidth(), this.getHeight());
+            if (endImg) {
+                image(endImg, this.x1, this.y1, this.getWidth(), this.getHeight());
+            } else {
+                fill(255, 0, 0);
+                rect(this.x1, this.y1, this.getWidth(), this.getHeight());
+            }
             return;
         } else if (this.weight > 1 && !this.isStart && !this.isEnd && !this.isWall) {
+            stroke(200);
+            strokeWeight(1);
             fill(this.color);
             textAlign(CENTER, CENTER);
             textSize(12);
@@ -87,7 +105,17 @@ class Block {
             return;
         }
 
-        fill(this.color);
+        stroke(200);
+        strokeWeight(1);
+
+        if (this.isWall) {
+            fill(178, 34, 34);
+        } else if (this.type === BlockType.PATH) {
+            fill(40, 167, 69);
+        } else {
+            fill(this.color);
+        }
+
         rect(this.x1, this.y1, this.getWidth(), this.getHeight());
     }
 

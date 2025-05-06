@@ -127,7 +127,16 @@
     width: 100%;
     font-size: 2.4em;
     font-family: 'Quicksand', sans-serif;
-    padding: 40px 0px;
+    padding: 40px 0 20px 0;
+}
+
+.subtitle {
+    display: inline-block;
+    text-align: center;
+    width: 100%;
+    font-size: 1em;
+    font-family: 'Quicksand', sans-serif;
+    padding-bottom: 20px;
 }
 
 .version {
@@ -231,6 +240,13 @@ a {
 .action-button:active {
     transform: translateY(0);
     box-shadow: 0 2px 4px rgba(33, 150, 243, 0.2);
+}
+
+main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
 }
 
 /* Dodaj stylowanie paska przewijania */

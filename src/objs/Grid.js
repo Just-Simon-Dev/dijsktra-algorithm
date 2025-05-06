@@ -1,16 +1,22 @@
 class Grid {
     constructor(width, height, length = 20) {
-        this.width = width;
-        this.height = height;
         this.length = length;
+        this.verticalNumberOfBlocks = Math.floor(window.innerWidth / this.length);
+        this.horizontalNumberOfBlocks = Math.floor(window.innerHeight / this.length);
+        this.width = this.verticalNumberOfBlocks * this.length;
+        this.height = this.horizontalNumberOfBlocks * this.length;
         this.grid = []
-        this.verticalNumberOfBlocks = Math.floor(width / length);
-        this.horizontalNumberOfBlocks = Math.floor(height / length);
+
+        const offsetX = (window.innerWidth - this.width) / 2;
 
         for (let y = 0; y < this.horizontalNumberOfBlocks; y++) {
             const row = [];
             for(let x = 0; x < this.verticalNumberOfBlocks; x++) {
-                row.push(new Block(x * length, y * length, (x + 1) * length, (y + 1) * length));
+                const startX = offsetX + x * length;
+                const endX = offsetX + (x + 1) * length;
+                const startY = y * length;
+                const endY = (y + 1) * length;
+                row.push(new Block(startX, startY, endX, endY));
             }
             this.grid.push(row);
         }
@@ -151,9 +157,10 @@ class Grid {
     }
 
     show() {
+        const offsetX = (window.innerWidth - this.width) / 2;
         for (let y = 0; y < this.horizontalNumberOfBlocks; y++) {
             for (let x = 0; x < this.verticalNumberOfBlocks; x++) {
-                this.grid[y][x].show();
+                this.grid[y][x].show(offsetX);
             }
         }
     }
