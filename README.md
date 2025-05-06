@@ -15,4 +15,4 @@ In this visualization, you can:
 - JavaScript (ES6+)
 
 # How open this project
-To check result of our work click this link [not provided yet] or download the project and run it on your local machine.
+To check result of our work click this [link](https://dijkstraalgorithm.systems/) or download the project and run it on your local machine.
