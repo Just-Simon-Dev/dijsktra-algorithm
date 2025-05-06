@@ -1,8 +1,8 @@
 class Grid {
     constructor(width, height, length = 20) {
         this.length = length;
-        this.verticalNumberOfBlocks = Math.floor(window.innerWidth / this.length);
-        this.horizontalNumberOfBlocks = Math.floor(window.innerHeight / this.length);
+        this.verticalNumberOfBlocks = Math.floor(width / this.length);
+        this.horizontalNumberOfBlocks = Math.floor(height / this.length);
         this.width = this.verticalNumberOfBlocks * this.length;
         this.height = this.horizontalNumberOfBlocks * this.length;
         this.grid = []

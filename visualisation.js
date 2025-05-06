@@ -6,7 +6,11 @@ function automateHeight() {
     let automateHeight = 0;
 
     document.body.children.forEach((element) => {
-        if (element.nodeName !== 'MAIN') {
+        const forbiddenClasses = ['header', 'popup']
+        const isForbidden = forbiddenClasses.some((forbiddenClass) => {
+            return element.classList.contains(forbiddenClass);
+        });
+        if (element.nodeName !== 'MAIN' && !isForbidden) {
             automateHeight += element.offsetHeight;
         }
     });
